@@ -22,7 +22,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--task_id",
         type=str,
-        default="apidoc-core@0.15.0_0",
+        default="org.quartz-scheduler:quartz-jobs:2.4.0_0",
         help="Unique identifier of the task to analyze (e.g., 'package@version_index' for js or 'group:artifact:version' for java)."
     )
     parser.add_argument(

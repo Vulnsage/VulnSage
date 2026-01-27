@@ -110,7 +110,7 @@ $ sudo docker-compose up -d --build
 
 ```shell
 $ sudo docker ps
-ba1c949d3ff2   vulnsage-backend:latest       "./vulnSageBackend.sh"   ...   0.0.0.0:8080->8080/tcp   server-app0-1
+ba1c949d3ff2   vulnsage-backend:latest       "./vulnSageBackend.sh"   ...                            server-app0-1
 2df24361924e   vulnsage-frontend:latest      "bash -c 'tail -f /d…"   ...                            frontend-app0-1
 ```
 

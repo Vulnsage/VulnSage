@@ -16,5 +16,3 @@ networks:
 services:
   app0:
     <<: *app-template
-    ports:
-      - "8080:8080"
