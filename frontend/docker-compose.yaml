@@ -1,0 +1,19 @@
+version: '3.8'
+x-app-template: &app-template
+  build: .
+  image: vulnsage-frontend:latest
+  environment:
+    DASH_SCOPE_API_KEY: "sk-xxxxxxxxxxxxxxx"
+  volumes:
+    - ./runs:/runs
+  command: bash -c "tail -f /dev/null"
+  networks:
+    - backend
+
+networks:
+  backend:
+    external: true
+
+services:
+  app0:
+    <<: *app-template

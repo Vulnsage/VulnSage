@@ -1,0 +1,44 @@
+Now you need to analyze and bypass all constraints in the code for generating an executable PoC script.
+The goal is to use the user-controlled parameter <riskyArg> in scriptTemplate to invoke trigger prove the existence of the vulnerability.
+The specific requirements are as follows:
+
+# Thinking Chain
+1. Carefully review the given code on the part of callchain, and analyze the conditional constraints and parameter construction specifications that need to be bypassed in the code, combining with the last constraint(if last_constraint is empty, this is the first analysis of code constraints). The goal is to allow the user-controllable parameter <riskyArg> in the scriptTemplate to propagate to the next layer of the call_chain, while ensuring the controllable parameter bypasses conditional checks and carries dangerous execution parameters (e.g., `ldap://127.0.0.1:1099/Foo`).
+2. Concatenate and aggregate the newly added conditional constraints and parameter construction specifications with the last constraint, then output the detailed combined results. This ensures that satisfying the current output constraints will allow the user-controllable parameter to bypass conditional checks.
+
+# Output requirements:
+First think about the reasoning process in the mind and then provides the user with the answer. The reasoning process and answer are enclosed within <think> </think> and <answer></answer>tags, respectively, i.e.,<think>reasoning process here</think><answer> answer here </answer>.
+##Output Answer format example:
+\{\{
+"constraints": "In `_download_git`: \n 1. `url` must contain \"ldap+\" or start with \"ldap://\" to trigger the jndi service\n 2. `filename` must be a valid file path that can be written to\n 3. Use jndi url should start with {"
+}}
+\{\{
+  "aggregated_constraints": [
+    "Constraint 1: `url` must contain \"ldap://\" to trigger the git handler",
+    "Constraint 2: `filename` must be a valid file path that can be written to",
+    # Additional constraints...
+  ],
+  "parameter_construction_rules": [
+    "riskyArg": "`spec` should be a string and start with 'ldap://'"
+    # Additional parameter construction rules...
+  ]
+}}
+
+# scriptTemplate:
+```
+{{template}}
+```
+
+#Last Constraint
+{{last_constraint}}
+
+# Code to be analyzed:
+## call_chain
+{{ call_chain }}
+Note: the vulnerable trace is in `call_chain` field of trace
+
+## code
+{{ trace_code }}
+
+## class_constructors Some complex constructors
+{{class_constructors}}

@@ -1,0 +1,35 @@
+[
+  {
+    "class_constructors": {
+      "org.quartz.Job": "package org.quartz\npublic class Job {\n}",
+      "org.quartz.jobs.ee.jms.SendQueueMessageJob": "package org.quartz.jobs.ee.jms\npublic class SendQueueMessageJob {\n}",
+      "org.quartz.impl.triggers.SimpleTriggerImpl": "package org.quartz.impl.triggers;\npublic class SimpleTriggerImpl extends AbstractTrigger<SimpleTrigger> implements SimpleTrigger, CoreTrigger {\n    private static final long serialVersionUID = -3735980074222850397L;\n    private static final int YEAR_TO_GIVEUP_SCHEDULING_AT = Calendar.getInstance().get(1) + 100;\n    private Date startTime;\n    private Date endTime;\n    private Date nextFireTime;\n    private Date previousFireTime;\n    private int repeatCount;\n    private long repeatInterval;\n    private int timesTriggered;\n    private static final boolean COMPLETE = false;\n\n    public SimpleTriggerImpl() {\n        this.startTime = null;\n        this.endTime = null;\n        this.nextFireTime = null;\n        this.previousFireTime = null;\n        this.repeatCount = 0;\n        this.repeatInterval = 0L;\n        this.timesTriggered = 0;\n    }\n}",
+      "org.quartz.impl.JobExecutionContextImpl": "package org.quartz.impl\npublic class JobExecutionContextImpl {\n\t\\void JobExecutionContextImpl(org.quartz.Scheduler, org.quartz.spi.TriggerFiredBundle, org.quartz.Job)\n//起始行\n   public JobExecutionContextImpl(Scheduler scheduler, TriggerFiredBundle firedBundle, Job job) {\n      this.scheduler = scheduler;\n      this.trigger = firedBundle.getTrigger();\n      this.calendar = firedBundle.getCalendar();\n      this.jobDetail = firedBundle.getJobDetail();\n      this.job = job;\n      this.recovering = firedBundle.isRecovering();\n      this.fireTime = firedBundle.getFireTime();\n      this.scheduledFireTime = firedBundle.getScheduledFireTime();\n      this.prevFireTime = firedBundle.getPrevFireTime();\n      this.nextFireTime = firedBundle.getNextFireTime();\n      this.jobDataMap = new JobDataMap();\n      this.jobDataMap.putAll(this.jobDetail.getJobDataMap());\n      this.jobDataMap.putAll(this.trigger.getJobDataMap());\n   }\n}",
+      "org.quartz.Scheduler": "package org.quartz\npublic class Scheduler {\n}",
+      "org.quartz.spi.TriggerFiredBundle": "package org.quartz.spi\npublic class TriggerFiredBundle {\n\t\\void TriggerFiredBundle(org.quartz.JobDetail, org.quartz.spi.OperableTrigger, org.quartz.Calendar, boolean, java.util.Date, java.util.Date, java.util.Date, java.util.Date)\n//起始行\n   public TriggerFiredBundle(JobDetail job, OperableTrigger trigger, Calendar cal, boolean jobIsRecovering, Date fireTime, Date scheduledFireTime, Date prevFireTime, Date nextFireTime) {\n      this.job = job;\n      this.trigger = trigger;\n      this.cal = cal;\n      this.jobIsRecovering = jobIsRecovering;\n      this.fireTime = fireTime;\n      this.scheduledFireTime = scheduledFireTime;\n      this.prevFireTime = prevFireTime;\n      this.nextFireTime = nextFireTime;\n   }\n}",
+      "org.quartz.impl.JobDetailImpl": "package org.quartz.impl;\npublic class JobDetailImpl implements Cloneable, Serializable, JobDetail {\n    private static final long serialVersionUID = -6069784757781506897L;\n    private String name;\n    private String group;\n    private String description;\n    private Class<? extends Job> jobClass;\n    private JobDataMap jobDataMap;\n    private boolean durability;\n    private boolean shouldRecover;\n    private transient JobKey key;\n\n    public JobDetailImpl() {\n        this.group = \"DEFAULT\";\n        this.durability = false;\n        this.shouldRecover = false;\n        this.key = null;\n    }}"
+    },
+    "code_check_list": [
+      "import org.quartz.jobs.ee.jms.SendQueueMessageJob",
+      "new SendQueueMessageJob",
+      "instance.execute"
+    ],
+    "detailed_trace": {
+      "org.quartz.impl.JobExecutionContextImpl.getMergedJobDataMap()": "   public JobDataMap getMergedJobDataMap() {\n      return this.jobDataMap;\n   }\n",
+      "org.quartz.jobs.ee.jms.SendQueueMessageJob.execute(org.quartz.JobExecutionContext)": "   public void execute(JobExecutionContext jobCtx) throws JobExecutionException {\n      QueueConnection conn = null;\n      QueueSession sess = null;\n      QueueSender sender = null;\n\n      try {\n         JobDataMap dataMap = jobCtx.getMergedJobDataMap();\n         Context namingCtx = JmsHelper.getInitialContext(dataMap);\n         QueueConnectionFactory connFactory = (QueueConnectionFactory)namingCtx.lookup(dataMap.getString(\"jms.connection.factory\"));\n         if (!JmsHelper.isDestinationSecure(dataMap)) {\n            conn = connFactory.createQueueConnection();\n         } else {\n            String user = dataMap.getString(\"jms.user\");\n            String password = dataMap.getString(\"jms.password\");\n            conn = connFactory.createQueueConnection(user, password);\n         }\n\n         boolean useTransactions = JmsHelper.useTransaction(dataMap);\n         int ackMode = dataMap.getInt(\"jms.acknowledge\");\n         sess = conn.createQueueSession(useTransactions, ackMode);\n         Queue queue = (Queue)namingCtx.lookup(dataMap.getString(\"jms.destination\"));\n         sender = sess.createSender(queue);\n         JmsMessageFactory msgFactory = JmsHelper.getMessageFactory(dataMap.getString(\"jms.message.factory.class.name\"));\n         Message msg = msgFactory.createMessage(dataMap, sess);\n         sender.send(msg);\n      } catch (Exception var16) {\n         throw new JobExecutionException(var16.getMessage());\n      } finally {\n         JmsHelper.closeResource(sender);\n         JmsHelper.closeResource(sess);\n         JmsHelper.closeResource(conn);\n      }\n\n   }\n"
+    },
+    "install_module_mode": "maven",
+    "package_name": "org.quartz-scheduler:quartz-jobs:2.4.0",
+    "task_id": "org.quartz-scheduler:quartz-jobs:2.4.0_0",
+    "task_type": "JNDIECR",
+    "template": "import org.quartz.jobs.ee.jms.SendQueueMessageJob;SendQueueMessageJob instance = new SendQueueMessageJob(<constructorArg>);instance.execute(<riskyArg>)",
+    "trace": {
+      "call_chain": [
+        "org.quartz.jobs.ee.jms.SendQueueMessageJob.execute(org.quartz.JobExecutionContext)",
+        "org.quartz.impl.JobExecutionContextImpl.getMergedJobDataMap()"
+      ],
+      "user_input": "jobCtx;the 0th arg of execute(org.quartz.JobExecutionContext)",
+      "vulnerable_function": "namingCtx in org.quartz.jobs.ee.jms.SendQueueMessageJob.execute(org.quartz.JobExecutionContext)"
+    }
+  }
+]

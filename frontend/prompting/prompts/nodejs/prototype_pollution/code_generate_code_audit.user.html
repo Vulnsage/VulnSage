@@ -1,0 +1,63 @@
+Now you need to analyze and bypass all constraints in the code for generating an executable PoC script.
+The goal is to exploit the user-controlled risky argument (<riskyArg>, <riskyPrototype> and <riskyName>) in scriptTemplate to inject/delete any properties of Object.prototype, so as to prove the existence of the vulnerability.
+The risky arguments has three types:
+- <riskyPrototype>: the risky argument that related to Object.prototype hijacking.
+- <riskyName>: the risky argument that related to the injected/deleted property names.
+- <riskyArg>: the risky argument that related to both <riskyPrototype> and <riskyName>.
+The specific requirements are as follows:
+
+# Thinking Chain
+1. Carefully review the given code on the part of callchain, and analyze the conditional constraints and parameter construction specifications that need to be bypassed in the code, combining with the last constraint(if last_constraint is empty, this is the first analysis of code constraints). The goal is to allow the user-controllable parameter (<riskyArg>, <riskyPrototype> and <riskyName>) in the scriptTemplate to propagate to the next layer of the call_chain, while ensuring the controllable parameter bypasses conditional checks and carries dangerous execution parameters (e.g., `__proto__`).
+2. Concatenate and aggregate the newly added conditional constraints and parameter construction specifications with the last constraint,
+   then output the detailed combined results. This ensures that satisfying the current output constraints will allow the user-controllable parameter to bypass conditional checks.
+
+# Output requirements:
+First think about the reasoning process in the mind and then provides the user with the answer. The reasoning process and answer are enclosed within <think> </think> and <answer></answer>tags, respectively, i.e.,<think>reasoning process here</think><answer> answer here </answer>.
+##Output Answer format example 1:
+\{\{
+"constraints": "In `deepSet`: \n 1. `key` must be a string contain several '.'\n 2. `parent` must be a JavaScript built-in object whose prototype is 'Object.prototype'\n 3. `mode` must not equals to \"push\""
+}}
+\{\{
+  "aggregated_constraints": [
+    "Constraint 1: `parent` must be a JavaScript built-in object whose prototype is 'Object.prototype', e.g, `\{\}`",
+    "Constraint 2: `mode` must not equals to \"push\"",
+    # Additional constraints...
+  ],
+  "parameter_construction_rules": [
+    "riskyArg": "`key` must be a string containing several '.', e.g.`__proto__.polluted`"
+    # Additional parameter construction rules...
+  ]
+}}
+##Output Answer format example 2:
+\{\{
+"constraints": "In `deleteData`: \n 1. `keys` must be a string contain several '.'\n 2. `state` must be a JavaScript built-in object whose prototype is 'Object.prototype'\n"
+}}
+\{\{
+  "aggregated_constraints": [
+    "Constraint 1: `state` must be a JavaScript built-in object whose prototype is 'Object.prototype', e.g, `\{\}`",
+    # Additional constraints...
+  ],
+  "parameter_construction_rules": [
+    "riskyArg": "`keys` must be a string containing several '.', e.g.`__proto__.toString`"
+    # Additional parameter construction rules...
+  ]
+}}
+
+# scriptTemplate:
+```
+{{template}}
+```
+
+#Last Constraint
+{{last_constraint}}
+
+# Code to be analyzed:
+## call_chain
+{{ call_chain }}
+Note: the vulnerable trace is in `call_chain` field of trace
+
+## code
+{{ trace_code }}
+
+## class_constructors Some complex constructors
+{{class_constructors}}

@@ -1,0 +1,44 @@
+# Proof of Concept (PoC) Generation for Vulnerable Code Template
+
+## Task Description:
+Your task is to write a script that demonstrates the vulnerability in the given code template.
+The goal is to exploit the user-controlled risky arguments to inject/delete some properties of Object.prototype, so as to demonstrates the vulnerability exist.
+The risky arguments has three types:
+- <riskyPrototype>: the risky argument that related to Object.prototype hijacking.
+- <riskyName>: the risky argument that related to the injected/deleted property names.
+- <riskyArg>: the risky argument that related to both <riskyPrototype> and <riskyName>.
+Example 1: `obj[key][path]=val;`, where key is <riskyPrototype> and path is <riskyName>; A possible exploit is `key='__proto__', path='polluted'`.
+Example 2: `let keys=path.split('.'); obj[keys[0]][keys[1]]=val;`, where path is <riskyArg>; A possible exploit is `path=__proto__.polluted`.
+For the other arguments, you can specify their type without being restricted by the original function logic. Example: make `arr` as an object instead of an array.
+Note: the script should not contain any direct access to Object.prototype!
+
+In the following section, you will find the given code template, lastReason, lastScript, trace and code.
+
+- script template: the code template you need to follow
+- taskId: the task id of the task.
+- sessionId: the session id of the task.
+
+You should follow the given step to generate the PoC.
+
+1. Init the environment.
+2. Install the necessary module {{ package_name }}.
+3. Generate the script that demonstrates the vulnerability.
+4. Make sure you follow the given template, document the results.
+- If the script successfully invoke trigger, ensure the exploitation of the vulnerability effectively.
+- If the script but failed to invoke trigger, identify the issue and modify the script accordingly.
+- If the script fails, identify the issue and modify the script accordingly.
+
+-------------------------------------------------------
+
+## script template:
+```
+{{template}}
+```
+
+## taskId
+
+{{task_id}}
+
+## sessionId
+
+{{session_id}}

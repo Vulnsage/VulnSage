@@ -1,0 +1,20 @@
+version: '3.8'
+x-app-template: &app-template
+  build: .
+  image: vulnsage-backend:latest
+  volumes:
+    - ./env:/app/env
+    - ./decompile:/app/decompile
+    - ./extension:/app/extension
+  networks:
+    - backend
+
+networks:
+  backend:
+    external: true
+
+services:
+  app0:
+    <<: *app-template
+    ports:
+      - "8080:8080"

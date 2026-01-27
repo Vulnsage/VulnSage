@@ -1,0 +1,59 @@
+Now you need to analyze and bypass all constraints in the code and generate an executable PoC script.
+The goal is to use the user-controlled parameter <riskyArg> to invoke trigger to prove the existence of the vulnerability.
+
+The specific requirements are as follows:
+Step1. The PoC script you tried to generate before reported an error in the real environment. The error reasons include STDOUT and STDERR, and the execution path EXECUTION_TRACE in the real environment is provided;
+Step2. Please analyze the execution path and failure reasons based on the problems displayed by STDOUT and STDERR, and re-read the code in combination with the previous execution script (lastScriptCode).
+    The goal is to bypass the constraints in the code, fix the error problems, modify the script or regenerate new executable code.
+    Specifically, you need to modify one or more parameters in <riskyArg>, use the user-controlled parameters to construct instructions and pass them into the execute function.
+    You can use `../../../ ... /opt/flag` to achieve this.
+    It is able to use curl command or http.request in script to trigger the vulnerability.
+Step3. Finally, remember to check the syntax of the script with reference to the Tips. Note that the code should strictly follow the given template, ensure that all elements shown in the template are met and all code constraints are bypassed, and meet every "must-meet condition"; ensure that all required classes are correctly imported, and the parameter construction must comply with the constraints of the class constructor. Pay attention to the fact that some parameters in the construction class that have call requirements cannot be left blank;
+If necessary, repeat the steps of Step1-Step3 until the PoC code that meets the conditions is generated
+Tips:
+1. You can bypass the check by splicing multiple parameters, and finally splice the parameters in the code link and pass them to exec for execution, such as passing `../../../ ... /opt/flag` in request or containing `../../../ ... /opt/flag` in parameters;
+2. If the parameters that do not involve parameter passing/are irrelevant to task execution/are not used by the underlying implementation of the construction class, you can try to pass in null for such parameters (user-controllable parameters that need to be passed in need to refer to the multi-layer function call fine construction);
+3. It is forbidden to implement/rewrite/construct the existing construction class methods in the code by yourself; refer to the code and class_constructors to correctly import the necessary classes;
+4. Through the error information feedback and the given class_constructors, find the appropriate parameters to create the instance. Make sure that all necessary parameters are initialized correctly and no necessary objects are omitted;
+5. Do not consider using the reflection mechanism to bypass the construction restrictions unless it is absolutely necessary;
+6. If the error shows that the code didn't follow the given template, please strictly follow the template to reconstruct the PoC;
+7. Remember to add appropriate exception handling logic according to the error prompt when the final call is executed, and capture and handle the corresponding exception;
+8. When encountering a NullPointer error, re-read the code and the breakpoint at the bottom of the error stack, combine the code and class_constructors to analyze the parameters that cannot be empty in the function parameter, and perform special construction for them;
+9. If still failed to start server with template, you need to search the class function to find the necessary parameters to construct the instance and start the serve correctly;
+
+Conditions that must be met:
+1. It is forbidden to directly use the fs.readFile to read the file;
+2. Remember to encode the url request with encodeURI if needed
+3. Strictly follow the given template to construct the PoC;
+
+#Fail Reason
+{{failReason}}
+
+#Last Script Code：
+{{lastScriptCode}}
+
+
+#Output requirements:
+First think about the reasoning process in the mind and then provides the user with the answer. The reasoning process and answer are enclosed within <think> </think> and <answer></answer>tags, respectively, i.e.,<think>reasoning process here</think><answer> answer here </answer>.
+##Output Answer format:
+\{\{
+"scriptCode": follow the script template (English only; you can only replace <riskyArg> and <constructorArg>), do not write comments.
+"reason": the reason to choose this PoC
+}}
+## scriptTemplate:
+```
+{{template}}
+```
+
+#Code to be analyzed:
+## trace
+{{trace}}
+
+Note: the vulnerable trace is in `call_chain` field of trace
+Note: the {{ template }} is the alais name of first function in call_chain.
+
+## code
+{{code}}
+
+## class_constructors Some complex constructors
+{{class_constructors}}

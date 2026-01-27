@@ -1,0 +1,35 @@
+<!-- pom.xml -->
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.jiunie</groupId>
+    <artifactId>maven-path-resolver-plugin</artifactId>
+    <version>1.0.0</version>
+    <packaging>maven-plugin</packaging>
+
+    <dependencies>
+        <!-- Maven 插件 API -->
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-plugin-api</artifactId>
+            <version>3.8.6</version>
+        </dependency>
+        <!-- Maven 核心依赖解析 -->
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-core</artifactId>
+            <version>3.8.6</version>
+        </dependency>
+        <!-- Maven 依赖解析工具 -->
+        <dependency>
+            <groupId>org.apache.maven.plugin-tools</groupId>
+            <artifactId>maven-plugin-annotations</artifactId>
+            <version>3.6.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven.shared</groupId>
+            <artifactId>maven-dependency-tree</artifactId>
+            <version>3.2.0</version>
+        </dependency>
+    </dependencies>
+</project>

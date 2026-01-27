@@ -1,0 +1,56 @@
+Now you need to analyze and bypass all constraints in the code and generate an executable PoC script.
+The goal is to exploit the user-controlled argument (<riskyPrototype>, <riskyPropName> and <riskyArg>) to inject/delete properties of Object.prototype, so as to demonstrates the vulnerability exist.
+
+You should follow the given step to generate the PoC.
+
+# Thinking Chain
+
+Step1: Identify the Vulnerability: In order to generate a script that demonstrates the vulnerability, understand the code on the trace where the potential vulnerability is located step by step.
+Step2: Exploit the Vulnerability: Modify risky arguments to inject/delete properties of Object.prototype. Please choose ONE of these targets:
+- Target 1: Inject a non-existent property (named <propName>) to Object.prototype. Note that you must use `console.log((\{} as any).<propName> !== undefined ? '[POLLUTION_TRIGGERED]':'')` to verify the exploit. If <constructorArg> exists, you should modify it to create an instance of clazz according to constructor function.
+- Target 2: Delete the `toString` property of Object.prototype. Note that you must use `console.log(( \{}  as any).toString ? '':'[DELETE_TRIGGERED]')` to verify the exploit. If <constructorArg> exists, you should modify it to create an instance of clazz according to constructor function.
+- Note: Any direct access to Object.prototype is not allowed; For the other arguments, you can specify their type without being restricted by the original function logic. Example: making `arr` as an object instead of an array.
+Step3: Write the Script: Create a script that uses the modified risky arguments to demonstrate the vulnerability. Note that you must follow the script template below.
+Step4: Reflect and Self-Critics: IF lastScript exists, refer to lastReason to reflect on whether the new Script is correct. If necessary, repeat Steps 1 to 3 until a Script different from lastScript is generated.
+
+If necessary, repeat the steps of Step1-Step3 until the PoC code that meets the conditions is generated
+
+Tips:
+1. You can bypass the check by splicing multiple parameters.
+2. If the parameters that do not involve parameter passing/are irrelevant to task execution/cannot be constructed by the underlying implementation of the construction class, such parameters can be passed in null first (user-controllable parameters that need to be passed in need to refer to the multi-layer function call fine construction);
+3. Remember to add appropriate exception handling logic when the final call is executed to capture and handle exceptions.
+4. It is forbidden to implement/rewrite/construct the existing construction class methods in the code; refer to the code and class_constructors to correctly import the necessary classes;
+5. Through the error information feedback and the given class_constructors, find the appropriate parameters to create the instance, and ensure that all necessary parameters are initialized correctly and no necessary objects are omitted;
+6. Do not consider using the reflection mechanism to bypass the construction restrictions unless it is absolutely necessary;
+
+Conditions that must be met:
+1. Strictly follow the given template to construct the PoC;
+
+# Output requirements:
+First think about the reasoning process in the mind and then provides the user with the answer. The reasoning process and answer are enclosed within <think> </think> and <answer></answer>tags, respectively, i.e.,<think>reasoning process here</think><answer> answer here </answer>.
+
+## Output Answer format:
+
+\{\{
+"scriptCode": follow the script template (English only; you can only replace <riskyPrototype>, <riskyPropName> and <riskyArg> and <constructorArg>), do not write comments.
+"reason": the reason to choose this PoC
+}}
+
+## scriptTemplate:
+```
+{{template}}
+```
+# Constraints
+{{constraints}}
+
+#Code to be analyzed:
+## trace
+{{trace}}
+
+Note: the vulnerable trace is in `call_chain` field of trace
+
+## code
+{{code}}
+
+## class_constructors Some complex constructors
+{{class_constructors}}

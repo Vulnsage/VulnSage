@@ -1,0 +1,70 @@
+[
+  {
+    "model_type": "dashscope_text_embedding",
+    "config_name": "text-embedding-v2",
+    "model_name": "text-embedding-v2",
+    "api_key": ""
+  },
+  {
+    "model_type": "dashscope_chat",
+    "config_name": "qwen-max",
+    "model_name": "qwen-max",
+    "api_key": ""
+  },
+  {
+    "model_type": "dashscope_chat",
+    "config_name": "deepseek-r1",
+    "model_name": "deepseek-r1",
+    "api_key": ""
+  },
+  {
+    "model_type": "dashscope_chat",
+    "config_name": "qwen-plus",
+    "model_name": "qwen-plus",
+    "temperature": 0.01,
+    "api_key": ""
+  },
+  {
+    "model_type": "dashscope_chat",
+    "config_name": "qwen3-max",
+    "model_name": "qwen3-max",
+    "temperature": 0.01,
+    "api_key": ""
+  },
+  {
+    "model_type": "dashscope_chat",
+    "config_name": "qwen-coder",
+    "model_name": "qwen-coder",
+    "api_key": ""
+  },
+  {
+    "model_type": "dashscope_chat",
+    "config_name": "qwq-plus",
+    "model_name": "qwq-plus",
+    "stream": true,
+    "api_key": ""
+  },
+  {
+    "model_type": "dashscope_chat",
+    "config_name": "qwen3-235b-a22b",
+    "model_name": "qwen3-235b-a22b",
+    "temperature": 0.01,
+    "stream": true,
+    "enable_thinking": true,
+    "api_key": ""
+  },
+  {
+    "model_type": "openai_chat",
+    "config_name": "gpt4o-1120",
+    "model_name": "gpt4o-1120",
+    "temperature": 0.01,
+    "api_key": ""
+  },
+  {
+    "model_type": "openai_chat",
+    "config_name": "qwen-plus-2025-04-28",
+    "model_name": "qwen-plus-2025-04-28",
+    "temperature": 0.01,
+    "api_key": ""
+  }
+]

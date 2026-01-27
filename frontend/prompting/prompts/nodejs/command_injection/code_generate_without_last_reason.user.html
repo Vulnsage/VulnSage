@@ -1,0 +1,50 @@
+Now you need to analyze and bypass all constraints in the code and generate an executable PoC script.
+The goal is to use the user-controlled parameter <riskyArg> to invoke trigger prove the existence of the vulnerability.
+The specific requirements are as follows:
+
+# Thinking Chain
+Step1. Analyze all code snippets in the order of call_chain given in the trace, find the command injection point, and pay attention to all constraints on the path from user-controllable parameters to the injection point, including parameter construction specifications, and record the constraints;
+Step2. Create an executable PoC script (English comments) with reference to the given scriptTemplate, remember to bypass all constraints, and refer to class_constructors to construct appropriate parameters to create an instance.
+    Specifically, you need to modify <riskyArg> to invoke trigger with user-controlled parameters.
+    You can use `/opt/trigger` to achieve this.
+    If <constructorArg> exists, it should be modified to create an instance of clazz according to the constructor.
+Step3. Check the syntax of the script to ensure that all elements shown in the template are met, confirm that each code constraint mentioned in Step1 is bypassed, and each "must-meet condition" is met; ensure that all required classes are correctly imported, all calling functions are correctly constructed, and some parameters in the construction class that require calling cannot be left blank;
+If necessary, repeat the steps of Step1-Step3 until the PoC code that meets the conditions is generated
+
+Tips:
+1. You can bypass the check by splicing multiple parameters, and finally splice the parameters in the code link and pass them to exec for execution, such as passing `/opt/trigger` in cmd or containing `/opt/trigger` in parameters;
+2. If the parameters that do not involve parameter passing/are irrelevant to task execution/cannot be constructed by the underlying implementation of the construction class, such parameters can be passed in null first (user-controllable parameters that need to be passed in need to refer to the multi-layer function call fine construction);
+3. Remember to add appropriate exception handling logic when the final call is executed to capture and handle exceptions.
+4. It is forbidden to implement/rewrite/construct the existing construction class methods in the code; refer to the code and class_constructors to correctly import the necessary classes;
+5. Through the error information feedback and the given class_constructors, find the appropriate parameters to create the instance, and ensure that all necessary parameters are initialized correctly and no necessary objects are omitted;
+6. Do not consider using the reflection mechanism to bypass the construction restrictions unless it is absolutely necessary;
+
+Conditions that must be met:
+1. It is forbidden to directly use the exec/execSync/spawn methods of the child_process module to directly execute commands;
+2. It is forbidden to create a function containing child_process.exec/execSync/spawn and pass as parameters to the underlying function;
+3. Strictly follow the given template to construct the PoC;
+
+#Output requirements:
+First think about the reasoning process in the mind and then provides the user with the answer. The reasoning process and answer are enclosed within <think> </think> and <answer></answer>tags, respectively, i.e.,<think>reasoning process here</think><answer> answer here </answer>.
+##Output Answer format:
+\{\{
+"scriptCode": follow the script template (English only; you can only replace <riskyArg> and <constructorArg>), do not write comments.
+"reason": the reason to choose this PoC
+}}
+## scriptTemplate:
+```
+{{template}}
+```
+
+#Code to be analyzed:
+## trace
+{{trace}}
+
+Note: the vulnerable trace is in `call_chain` field of trace
+Note: the {{ template }} is the alais name of first function in call_chain.
+
+## code
+{{code}}
+
+## class_constructors Some complex constructors
+{{class_constructors}}
